@@ -28,8 +28,8 @@ public class Detail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        MainActivity.Artist current = MainActivity.Artists.get(position);
         position = getIntent().getIntExtra("position", -1);
+        MainActivity.Artist current = MainActivity.Artists.get(position);
         imageView = (ImageView) findViewById(R.id.photo);
         loader = ImageLoader.getInstance();
         progressBar = (ProgressBar) findViewById(R.id.prgbar);

@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     MyListViewAdapter adapter; //Кастомный адаптер для ListView
     ListView listview;
     ProgressBar progressBar;
-    int position = -1;
 
 
     @Override
@@ -76,8 +75,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             progressBar.setVisibility(View.VISIBLE);
             //Запуск асинхронного парсера
             new ParsingJSON().execute();
-        }else{
-            if (position!=-1) listview.smoothScrollToPosition(position);
         }
     }
 
@@ -86,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (id != -1) {
             Intent intent = new Intent(this, Detail.class);
             intent.putExtra("position", position);
-            this.position = position;
             startActivity(intent);
         }
     }
