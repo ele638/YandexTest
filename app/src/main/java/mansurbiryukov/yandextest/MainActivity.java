@@ -1,13 +1,15 @@
 package mansurbiryukov.yandextest;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -34,9 +36,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public static String LOG_TAG = "my_log"; //Тэг для логов
     public static List<Artist> Artists = new ArrayList<>(); //Массив всех исполнителей
     public ImageLoader loader; //Загрузчик изображений
-    MyListViewAdapter adapter; //Кастомный адаптер для ListView
-    ListView listview;
+    MyRVAdapter adapter; //Кастомный адаптер для ListView
+    RecyclerView recyclerView;
     ProgressBar progressBar;
+    AlertDialog alertDialog;
 
 
     @Override
@@ -60,18 +63,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         loader.init(config);
         progressBar = (ProgressBar) findViewById(R.id.progressbar);
 
+
         //Создание листвью и передача ему кастомного адаптера
-        listview = (ListView) findViewById(R.id.list);
-        adapter = new MyListViewAdapter(Artists, this, loader);
-        listview.setAdapter(adapter);
-        listview.setOnItemClickListener(this);
+        recyclerView = (RecyclerView) findViewById(R.id.list);
+        adapter = new MyRVAdapter(Artists, this, loader);
+        recyclerView.setAdapter(adapter);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(llm);
 
 
 
 
         if(Artists.isEmpty()){
             //Запуск заглушки
-            listview.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
             //Запуск асинхронного парсера
             new ParsingJSON().execute();
@@ -140,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
                 resultJson = buffer.toString();
             } catch (Exception e) {
-                e.printStackTrace();
+
             }
             return resultJson;
         }
@@ -183,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 //Сообщаем адаптеру, что данные обновились и необходимо перерисовать ListView
                 adapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
-                listview.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

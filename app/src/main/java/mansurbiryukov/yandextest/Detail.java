@@ -30,9 +30,9 @@ public class Detail extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         position = getIntent().getIntExtra("position", -1);
         MainActivity.Artist current = MainActivity.Artists.get(position);
-        imageView = (ImageView) findViewById(R.id.photo);
         loader = ImageLoader.getInstance();
         progressBar = (ProgressBar) findViewById(R.id.prgbar);
+        imageView = (ImageView) findViewById(R.id.photo);
         layout = (LinearLayout) findViewById(R.id.detaillayout);
         layout.setVisibility(View.GONE);
         loader.displayImage(current.cover.get(1), imageView, new ImageLoadingListener() {
